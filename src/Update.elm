@@ -67,7 +67,7 @@ update msg model =
                 if on && model.player.anim == Stand then
                     ({model|
                         player=model.player |> walk moveDirection
-                        , record = model.record ++ [Debug.log "msg" { time = model.time, msg = AIWalk moveDirection on}]
+                        , record = model.record ++ [ { time = model.time, msg = AIWalk moveDirection on}]
                     },Cmd.none)
                 else if on && model.player.anim ==Charge then
                     ({model|
@@ -76,7 +76,7 @@ update msg model =
                 else if not on && model.player.anim /= Jump && model.player.speed.y == 0 then
                     ({model|
                         player=model.player |> stand
-                        , record = model.record ++ [Debug.log "msg" { time = model.time, msg = AIWalk moveDirection on}]
+                        , record = model.record ++ [ { time = model.time, msg = AIWalk moveDirection on}]
                     },Cmd.none)
                 else 
                     (model,Cmd.none)
@@ -85,11 +85,11 @@ update msg model =
                 if on && model.player.anim == Stand then
                     ({model|
                         player=model.player |> charge 
-                        , record = model.record ++ [Debug.log "msg" { time = model.time, msg = AICharge model.player.jumpdir on}]}, Cmd.none )
+                        , record = model.record ++ [ { time = model.time, msg = AICharge model.player.jumpdir on}]}, Cmd.none )
                 else if not on && model.player.anim == Charge then
                     ({model| 
                         player=model.player |> jump
-                        , record = model.record ++ [Debug.log "msg" { time = model.time, msg = AICharge model.player.jumpdir on}] }, Cmd.none)
+                        , record = model.record ++ [ { time = model.time, msg = AICharge model.player.jumpdir on}] }, Cmd.none)
                 else    
                     (model,Cmd.none)
 
@@ -127,7 +127,7 @@ update msg model =
 
         DebugPos ->
             let
-                pos = Debug.log "Pos" model.player.pos
+                pos =  model.player.pos
             in
             ( model, Cmd.none )
         _ ->

@@ -58,7 +58,7 @@ animate time model =
                 |> tour time
                 |> changePos time
                 |> changeFrame time
-                |> debugBoss 
+                --|> debugBoss
                 else 
                     model.boss
 
@@ -101,14 +101,16 @@ stageAnim time model player=
 
 debugBoss boss= 
     if boss.anim == Attacked then
-        Debug.log "boss" boss
+       -- Debug.log "boss"
+       boss
     else
         boss
 
 bossChangeAnim boss =
     if ((boss.anim == Attack) && (boss.frame >=120) )
         || ((boss.anim == Attacked) && (boss.frame >=350)) then
-        Debug.log "turn" (boss |> turn)
+        --Debug.log "turn" (
+        boss |> turn--)
     else if (boss.anim /= Dead) && (boss.hp <=0) then
         boss |> dead
     else 
@@ -119,7 +121,8 @@ bossAttackedByPlayer player boss =
         boss
     else 
         if (attackedByPlayer player boss) then
-            Debug.log "attacked" (boss |> attacked (Vector 0 0))
+        --    Debug.log "attacked" (
+            boss |> attacked (Vector 0 0)--)
             |> loseBlood 1
         else
             boss

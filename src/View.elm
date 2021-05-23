@@ -675,26 +675,74 @@ renderCG model =
         prefix = "img/CG/"
         --prefix = "img/CG/" 
     in
-    renderImage ( (prefix ++ Debug.toString model.state) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
+    renderImage ( (prefix ++ stateToSring model.state) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))]
 
 renderStoryBackground model = 
     let
         prefix = "img/CG/"
         --prefix = "img/CG/" 
     in
-    if  model.state == Story1_5 then
-        [ renderImage  (prefix ++ "CG1_4.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"] 
-        , renderImage ( (prefix ++ Debug.toString model.state ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ]
-    else if model.state == Story5_0 then
-        [ renderImage  "img/background.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0"] 
-        , renderImage ( (prefix ++ Debug.toString model.state ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ] 
-    else if model.state == Story5_2 || model.state == Story5_1 then
-       [ renderImage  (prefix ++ "CG5_2.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"] 
-        , renderImage ( (prefix ++ Debug.toString model.state ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ] 
-    else if model.state == Story4_Lose || model.state == Story4_Win then
-        [ renderImage ( (prefix ++ Debug.toString model.state ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ]
-    else
-        [ renderImage ( (prefix ++ "CG" ++(String.right 3 (Debug.toString model.state))) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"] 
-        , renderImage ( (prefix ++ Debug.toString model.state ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ] 
+    case model.state of
+        Story1_5 ->
+            [ renderImage  (prefix ++ "CG1_4.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"]
+            , renderImage ( (prefix ++ "Story1_5" ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ]
+        Story5_0 ->
+            [ renderImage  "img/background.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0"]
+            , renderImage ( (prefix ++ "Story5_0" ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ]
+        Story5_2 ->
+            [ renderImage  (prefix ++ "CG5_2.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"]
+            , renderImage ( (prefix ++ "Story5_2" ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ]
+        Story5_1 ->
+            [ renderImage  (prefix ++ "CG5_2.png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"]
+            , renderImage ( (prefix ++ "Story5_1" ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ]
+        Story4_Lose ->
+            [ renderImage ( (prefix ++ "Story4_Lose" ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ]
+        Story4_Win ->
+            [ renderImage ( (prefix ++ "Story4_Win" ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ]
+        _ ->
+            [ renderImage ( (prefix ++ "CG" ++(String.right 3 (stateToSring model.state))) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity "0.3"]
+            , renderImage ( (prefix ++ stateToSring model.state ) ++ ".png") (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] ]
+
+
+stateToSring: Model.Stage -> String
+stateToSring state =
+    case state of
+            Model.One -> "One"
+            Model.Two -> "Two"
+            Model.Three -> "Three"
+            Model.DiscoverI -> "DiscoverI"
+            Model.DiscoverII -> "DiscoverII"
+            Model.LOGO -> "LOGO"
+            Model.Start -> "Start"
+            Model.About -> "About"
+            End -> "End"
+            Loading -> "Loading"
+            Story1_1 -> "Story1_1"
+            Story1_2 -> "Story1_2"
+            Story1_3 -> "Story1_3"
+            Story1_4 -> "Story1_4"
+            Story1_5 -> "Story1_5"
+            Story2_1 -> "Story2_1"
+            Story2_2 -> "Story2_2"
+            Story3_1 -> "Story3_1"
+            Story4_Win -> "Story4_Win"
+            Story4_Lose -> "Story4_Lose"
+            Story5_0 -> "Story5_0"
+            Story5_1 -> "Story5_1"
+            Story5_2 -> "Story5_2"
+            Story6_1 -> "Story6_1"
+            CG1_1 -> "CG1_1"
+            CG1_2 -> "CG1_2"
+            CG1_3 -> "CG1_3"
+            CG1_4 -> "CG1_4"
+            CG2_1 -> "CG2_1"
+            CG2_2 -> "CG2_2"
+            CG3_1 -> "CG3_1"
+            CG5_1 -> "CG5_1"
+            CG5_2 -> "CG5_2"
+            CG6_1 -> "CG6_1"
+            CG6_2 -> "CG6_2"
+
+
 renderLOGO model = 
     renderImage "img/Page/LOGO.png" (Pos 0 viewAttrs.size.x 0 viewAttrs.size.y) [opacity (String.fromFloat (1-(model.cgtime/1000-2.5)^4/40))] 
